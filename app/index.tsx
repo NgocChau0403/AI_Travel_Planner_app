@@ -1,15 +1,17 @@
 import { Text, View } from "react-native";
+import Login from "./../components/Login";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
+  const insets = useSafeAreaInsets();
   return (
     <View
       style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        paddingTop: insets.top,
+        //flex: 1,
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Login />
     </View>
   );
 }
