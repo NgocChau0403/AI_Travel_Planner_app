@@ -9,17 +9,23 @@ export default function RootLayout() {
     "outfit-medium": require("./../assets/fonts/Outfit-Medium.ttf"),
     " outfit-bold": require("./../assets/fonts/Outfit-Bold.ttf"),
   });
+
   return (
-    <SafeAreaProvider>
-      <StatusBar hidden />
-      <Stack>
-        <Stack.Screen
+    // <SafeAreaProvider>
+    //   <StatusBar hidden />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      {/* <Stack.Screen
           name="index"
           options={{
             headerShown: false,
           }}
-        />
-      </Stack>
-    </SafeAreaProvider>
+        /> */}
+      <Stack.Screen name="(tabs)" />
+    </Stack>
+    // </SafeAreaProvider>
   );
 }
