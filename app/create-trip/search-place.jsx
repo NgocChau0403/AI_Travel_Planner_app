@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "./../../constants/Colors";
 import { CreateTripContext } from "./../../context/CreateTripContext";
 
@@ -19,6 +19,7 @@ export default function SearchPlace() {
   const [loading, setLoading] = useState(false);
 
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -47,13 +48,14 @@ export default function SearchPlace() {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
           text
-        )}&format=json&addressdetails=1&limit=5`,
+        )}&format=json&addressdetails=1&limit=5&accept-language=en`,
         {
           headers: {
             "User-Agent": "AI_TravelPlanner/1.0 (ngocchaule0403@gmail.com)",
           },
         }
       );
+
       const data = await response.json();
       setSuggestions(data);
     } catch (error) {
@@ -78,6 +80,7 @@ export default function SearchPlace() {
         url: `https://www.openstreetmap.org/?mlat=${location.lat}&mlon=${location.lon}`,
       },
     });
+    router.push("/create-trip/select-traveler");
   };
 
   return (
