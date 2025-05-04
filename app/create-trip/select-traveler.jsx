@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigation } from "expo-router";
+import { useNavigation, Link } from "expo-router";
 import { Colors } from "./../../constants/Colors";
 import { SelectTravelesList } from "../../constants/Options";
 import { FlatList } from "react-native";
@@ -83,16 +83,21 @@ export default function SelectTraveler() {
           marginTop: 20,
         }}
       >
-        <Text
-          style={{
-            textAlign: "center",
-            color: Colors.WHITE,
-            fontFamily: "outfit-medium",
-            fontSize: 20,
-          }}
+        <Link
+          href={"/create-trip/select-dates"}
+          style={{ width: "100%", textAlign: "center" }}
         >
-          Continue
-        </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              color: Colors.WHITE,
+              fontFamily: "outfit-medium",
+              fontSize: 20,
+            }}
+          >
+            Continue
+          </Text>
+        </Link>
       </TouchableOpacity>
     </View>
   );
