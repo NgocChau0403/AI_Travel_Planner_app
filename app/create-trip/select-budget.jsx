@@ -30,11 +30,11 @@ export default function SelectBudget() {
   }, [selectedOption]);
 
   const onClickContinue = () => {
-    if (!selectOption) {
+    if (!selectedOption) {
       ToastAndroid.show("Select your budget", ToastAndroid.LONG);
       return;
     }
-    router.push("");
+    router.push("/create-trip/review-trip");
   };
   return (
     <View
@@ -82,7 +82,7 @@ export default function SelectBudget() {
         />
       </View>
       <TouchableOpacity
-        onPress={() => onClickContinue}
+        onPress={() => onClickContinue()}
         style={{
           padding: 15,
           backgroundColor: Colors.PRIMARY,
