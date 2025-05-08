@@ -9,6 +9,7 @@ import moment from "moment";
 export default function ReviewTrip() {
   const navigation = useNavigation();
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -172,7 +173,7 @@ export default function ReviewTrip() {
       </View>
 
       <TouchableOpacity
-        // onPress={() => onClickContinue}
+        onPress={() => router.replace("create-trip/generate-trip")}
         style={{
           padding: 15,
           backgroundColor: Colors.PRIMARY,
