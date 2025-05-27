@@ -21,6 +21,39 @@ export default function SearchPlace() {
   const { tripData, setTripData } = useContext(CreateTripContext);
   const router = useRouter();
 
+  // Hàm trích xuất tên thành phố từ display_name
+  const extractCityName = (displayName) => {
+    return displayName.split(",")[0].trim();
+  };
+
+  // Hàm gọi ảnh từ Wikipedia
+  const fetchPlaceImage = async (placeName) => {
+    try {
+      const response = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&titles=${encodeURIComponent(
+          placeName
+        )}&pithumbsize=500`
+      );
+
+      if (!response.ok) {
+        console.warn("Wikipedia API fetch failed:", response.status);
+        return null;
+      }
+
+      const data = await response.json();
+      const pages = data?.query?.pages;
+
+      const firstPageKey = Object.keys(pages)[0];
+      const firstPage = pages[firstPageKey];
+
+      console.log(firstPage?.thumbnail?.source);
+      return firstPage?.thumbnail?.source || "";
+    } catch (error) {
+      console.error("fetchWikipediaImage error:", error);
+      return "";
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -29,7 +62,7 @@ export default function SearchPlace() {
     });
   }, []);
 
-  // Auto search on query change (debounce-like effect)
+  // Tự động gọi gợi ý khi query thay đổi
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (query.length > 2) {
@@ -37,7 +70,7 @@ export default function SearchPlace() {
       } else {
         setSuggestions([]);
       }
-    }, 400); // 400ms delay
+    }, 400);
 
     return () => clearTimeout(delayDebounce);
   }, [query]);
@@ -65,9 +98,13 @@ export default function SearchPlace() {
     setLoading(false);
   };
 
-  const handleSelect = (location) => {
+  const handleSelect = async (location) => {
     setQuery(location.display_name);
     setSuggestions([]);
+
+    const cityNameOnly = extractCityName(location.display_name);
+    const photoUrl = await fetchPlaceImage(cityNameOnly);
+
     setTripData({
       ...tripData,
       locationInfo: {
@@ -76,10 +113,11 @@ export default function SearchPlace() {
           lat: location.lat,
           lon: location.lon,
         },
-        photoRef: null,
+        photoRef: photoUrl,
         url: `https://www.openstreetmap.org/?mlat=${location.lat}&mlon=${location.lon}`,
       },
     });
+
     router.push("/create-trip/select-traveler");
   };
 
